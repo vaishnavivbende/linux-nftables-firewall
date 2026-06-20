@@ -1,0 +1,11 @@
+table inet filter {
+	chain input {
+		iifname $loopback accept
+		#drop packets claiming to be from loopback range but arriving from outside
+	        ip saddr 127.0.0.0/8 iifname != $loopback drop
+	        ip6 saddr ::1 iifname != $loopback drop
+	}
+	chain output {
+		oifname $loopback accept
+	}
+}
