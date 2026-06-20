@@ -1,0 +1,13 @@
+table inet filter {
+	chain output {
+        #allow all new outgoing TCP connections
+        tcp dport 1-65535 ct state new accept
+
+        #allow all new outgoing UDP connections
+        udp dport 1-65535 ct state new accept
+
+        #allow all ephemeral traffic (responses)
+        tcp sport 1024-65535 ct state established accept
+        udp sport 1024-65535 ct state established accept
+	}
+}
