@@ -168,11 +168,10 @@ For a server environment where eliminating any unprotected network window is the
 
 After enabling the service and rebooting, the firewall loads automatically:
 
-```
 
 ![Systemd Status](screenshots/systemd-status.png)
 
-```
+
 
 `Type=oneshot` combined with `RemainAfterExit=yes` is used because the firewall script loads rules once and exits, rather than running as a continuous daemon. Without `RemainAfterExit=yes`, systemd would mark the service as inactive immediately after the script completes.
 
