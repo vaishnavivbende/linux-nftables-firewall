@@ -63,6 +63,36 @@ linux-nftables-firewall/
 
 ---
 
+## Screenshots
+
+**Firewall Loaded**
+
+
+![Firewall Loaded](screenshots/firewall-loaded.png)
+
+
+
+**Input Chain Ruleset**
+
+
+![Input Chain](screenshots/nft-list-ruleset-input.png)
+
+
+
+**Output Chain Ruleset**
+
+
+![Output Chain](screenshots/nft-list-ruleset-output.png)
+
+
+
+**Systemd Status After Reboot**
+
+
+![Systemd Status](screenshots/systemd-status.png)
+
+---
+
 ## How It Works
 
 The firewall follows a default-deny, explicit-allow security model:
@@ -207,7 +237,15 @@ This firewall was built and tested for a specific personal laptop environment. B
 
 - `tcpclient-policy.nft` allows all outgoing ports (1-65535), which is appropriate for general workstation use but would need restriction for server use cases
 - Forward chain is present but commented out in `setup-tables.nft`, as this firewall is designed for a single host, not a routing device
-- NAT table is defined but commented out, reserved for potential future use if this device were repurposed as a gateway
+
+---
+
+## Future Improvements
+
+- Add stricter outbound rules suitable for server deployments
+- Integrate logging with journalctl or external log analysis tools for easier monitoring
+- Explore enabling NAT/gateway mode for lab or homelab environments
+- Package the scripts into a Debian/Ubuntu `.deb` for easier installation and distribution
 
 ---
 
