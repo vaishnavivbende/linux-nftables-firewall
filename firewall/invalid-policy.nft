@@ -1,0 +1,25 @@
+table inet filter {
+	chain input {
+		#allow legitimate UDP multicast (class D) traffic
+		iifname $internetInt ip protocol udp ip daddr $net_classd accept
+
+		#drop class E (experimental) addresses
+		iifname $internetInt ip saddr $net_classe drop
+
+		#drop packets claiming to come from loopback address range
+		iifname $internetInt ip saddr $net_loopback drop
+
+		#IPv6
+		iifname $internetInt ip6 saddr ::1 drop              # Loopback
+		iifname $internetInt ip6 saddr fe80::/10 drop        # Link-local (should not appear on WAN)
+		iifname $internetInt ip6 saddr fc00::/7 drop         # Unique local (private IPv6)
+#		iifname $internetInt ip6 saddr ff00::/8 accept       # Multicast
+
+		iifname $internetInt ip6 daddr ff02::/16 accept      # Accept only legitimate multicast
+		iifname $internetInt ip6 saddr ff00::/8 drop         # Drop other multicast sources
+
+		iifname $internetInt ip6 saddr 2001:db8::/32 drop    # Documentation range
+		iifname $internetInt ip6 saddr 100::/64 drop         # Discard prefix
+	}
+
+}
