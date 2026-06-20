@@ -1,0 +1,22 @@
+table inet filter {
+	chain input {
+#		tcp dport 22 ct state established,related accept
+		#allow lan
+		iifname $internetInt ip saddr $externalSubnet tcp dport 22 ct state new,established accept
+		iifname $internetInt ip6 saddr $externalIPv6Subnet tcp dport 22 ct state new,established accept
+
+		#allow only from a single host
+		#iifname $internetInt tcp dport 22 ct state new ip saddr 192.168.193.10 accept
+
+		#if localhost is used for testing SSH
+		iifname $loopback tcp dport 22 ct state new,established accept
+
+		iifname $internetInt tcp dport 22 ct state new limit rate 3/minute accept
+		iifname $internetInt tcp dport 22 ct state new log prefix "SSH attempt: " drop
+
+	}
+	chain output {
+		#allow outgoing SSH responses
+		tcp sport 22 ct state established accept
+	}
+}
