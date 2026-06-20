@@ -1,0 +1,22 @@
+table inet filter {
+    chain input {
+        # accept DNS replies (UDP/TCP)
+#       udp sport 53 accept
+#       tcp sport 53 accept
+
+	      # Accept DNS replies only from known resolvers
+	      udp sport 53 ip saddr { 8.8.8.8, 8.8.4.4, 1.1.1.1 } accept
+	      tcp sport 53 ip saddr { 8.8.8.8, 8.8.4.4, 1.1.1.1 } accept
+    
+	      # IPv6 DNS resolvers
+	      udp sport 53 ip6 saddr { 2001:4860:4860::8888, 2620:fe::fe } accept
+	      tcp sport 53 ip6 saddr { 2001:4860:4860::8888, 2620:fe::fe } accept
+
+    }
+
+    chain output {
+        # allow DNS queries (UDP/TCP)
+        udp dport 53 accept
+        tcp dport 53 accept
+    }
+}
