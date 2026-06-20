@@ -1,0 +1,21 @@
+table inet filter {
+    chain input {
+        #log and drop unmatched ipv4 packets
+        meta nfproto ipv4 log prefix "DROP IPv4 INPUT: " limit rate 1/second
+        meta nfproto ipv4 drop
+
+        #log and drop unmatched ipv6 packets
+        meta nfproto ipv6 log prefix "DROP IPv6 INPUT: " limit rate 1/second
+        meta nfproto ipv6 drop
+    }
+
+    chain output {
+        #log and drop unmatched ipv4 packets
+	      meta nfproto ipv4 log prefix "DROP IPv4 OUTPUT: " limit rate 1/second
+        meta nfproto ipv4 drop
+      	#log and drop unmatched ipv6 packets
+        meta nfproto ipv6 log prefix "DROP IPv6 OUTPUT: " limit rate 1/second
+        meta nfproto ipv6 drop
+
+    }
+}
