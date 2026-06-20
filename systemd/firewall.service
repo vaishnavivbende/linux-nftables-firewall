@@ -1,0 +1,13 @@
+[Unit]
+Description=Custom nftables firewall
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/fire
+ExecStartPost=/bin/logger Firewall rules loaded successfully by systemd
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
