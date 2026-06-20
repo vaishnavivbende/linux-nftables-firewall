@@ -1,0 +1,25 @@
+define externalIP = 
+define externalSubnet = 
+define externalIPv6 = 
+define externalIPv6Subnet = 
+# dynamic variables - will be updated at runtime
+
+define loopback = "lo" #loopback
+define internetInt = "wlp2s0" #external/public interface
+
+#loopback and private ranges
+define net_loopback = 127.0.0.0/8
+define net_loopback6 = ::1/128
+define net_classa = 10.0.0.0/8
+define net_classb = 172.16.0.0/12
+define net_classc = 192.168.0.0/16
+define net_classd = 224.0.0.0/4
+define net_classe = 240.0.0.0/4
+
+#broadcasts
+define src_broadcast = 0.0.0.0
+define dst_broadcast = 255.255.255.255
+
+#port ranges
+define privPorts = 0-1023
+define unprivPorts = 1024-65535
