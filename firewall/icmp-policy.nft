@@ -1,0 +1,56 @@
+table inet filter {
+    chain input {
+        #allow common incoming ICMP types (responses, errors, TTL exceeded, etc.)
+        ip protocol icmp icmp type {
+            echo-request,
+            echo-reply,
+            destination-unreachable,
+            parameter-problem,
+            time-exceeded
+        } limit rate 10/second accept
+
+        #ipv6
+        ip6 nexthdr ipv6-icmp icmpv6 type {
+            echo-request,
+            echo-reply,
+            destination-unreachable,
+            packet-too-big,
+            time-exceeded,
+            parameter-problem,
+            nd-router-advert,
+            nd-neighbor-solicit,
+            nd-neighbor-advert,
+	    nd-router-solicit
+        } limit rate 10/second accept
+
+        #drop and log invalid IPv4/IPv6 ICMP
+        ip protocol icmp log prefix "INVALID IPv4 ICMP input: " limit rate 3/second drop
+        ip6 nexthdr ipv6-icmp log prefix "INVALID IPv6 ICMP input: " limit rate 3/second drop
+    }
+
+    chain output {
+        #allow outgoing ICMP types (pings, error reports)
+        ip protocol icmp icmp type {
+            echo-request,
+            destination-unreachable,
+            time-exceeded,
+            parameter-problem
+        } limit rate 10/second accept
+
+        #ipv6
+        ip6 nexthdr ipv6-icmp icmpv6 type {
+            echo-request,
+            destination-unreachable,
+            packet-too-big,
+            time-exceeded,
+            parameter-problem,
+            nd-router-solicit,
+            nd-neighbor-solicit,
+            nd-neighbor-advert
+        } limit rate 10/second accept
+
+        #drop and log invalid IPv4/IPv6 ICMP
+	      ip protocol icmp log prefix "INVALID IPv4 ICMP output: " limit rate 3/second drop
+        ip6 nexthdr ipv6-icmp log prefix "INVALID IPv6 ICMP output: " limit rate 3/second drop
+    }
+}
