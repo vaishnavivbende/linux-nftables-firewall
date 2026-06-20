@@ -1,0 +1,21 @@
+table inet filter {
+        chain input {
+                #allow DHCPv4 replies (server → client)
+                udp sport 67 udp dport 68 accept
+
+                #allow DHCPv6 replies (server → client)
+                udp sport 547 udp dport 546 accept
+
+                #normal connection-state rules
+                ct state established,related accept
+                ct state invalid log prefix "INVALID input: " limit rate 3/second drop
+        }
+
+        chain output {
+         		    udp sport 546 udp dport 547 accept
+
+                ct state established,related accept
+                ct state invalid log prefix "INVALID output: " limit rate 3/second drop
+
+        }
+}
